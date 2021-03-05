@@ -8,8 +8,10 @@ import morgan from "morgan";
 import connectDB from "./config/db.js";
 
 // import routes
+import userRoutes from "./routes/users.js";
 
 // import made middlewares
+import { notFound, errorHandler } from "./middlewares/errorMiddleware.js";
 
 // dotenv config
 dotenv.config();
@@ -28,11 +30,11 @@ if (process.env.NODE_ENV === "development") {
 app.use(express.json());
 
 // routes
-app.get("/", (req, res) => {
-  res.status(200).json({ success: true, msg: "TestTest" });
-});
+app.use("/api/a1/users", userRoutes);
 
 // error middleware
+app.use(notFound);
+app.use(errorHandler);
 
 // port running
 const PORT = process.env.PORT || 5000;
