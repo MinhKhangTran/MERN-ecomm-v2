@@ -29,6 +29,19 @@ export const getProductById = asyncHandler(async (req, res) => {
   res.status(200).json(product);
 });
 
+// @desc    get Top Products
+// @route   GET api/a1/products/top
+// @access  public
+export const getTopProducts = asyncHandler(async (req, res) => {
+  const products = await Product.find({}).sort({ rating: -1 }).limit(3);
+  if (products) {
+    res.status(200).json(products);
+  } else {
+    res.status(400);
+    throw new Error("Fehler beim fetchen");
+  }
+});
+
 // @desc    Create a review
 // @route   POST api/a1/products/:id/reviews
 // @access  Private

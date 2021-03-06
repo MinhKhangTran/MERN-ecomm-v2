@@ -7,6 +7,7 @@ export const createProductAdminValidator = [
   check("desc", "Eine Beschreibung ist nötig").notEmpty(),
   check("category", "Eine Kategorie ist nötig").notEmpty(),
   check("price", "Ein Preis ist nötig").notEmpty().isInt({ min: 0 }),
+  check("rating", "Ein Rating ist nötig").notEmpty().isInt({ min: 0, max: 5 }),
 ];
 export const updateProductAdminValidator = [
   check("name", "Ein Name ist nötig").notEmpty(),

@@ -8,6 +8,7 @@ import {
   deleteProduct,
   updateProduct,
   createReview,
+  getTopProducts,
 } from "../controllers/products.js";
 
 // validator
@@ -36,6 +37,8 @@ router
     grantAccess("createAny", "products"),
     createProduct
   );
+// get top 3
+router.route("/top").get(getTopProducts);
 // get,delete,update single product
 router
   .route("/:id")
@@ -48,6 +51,7 @@ router
     grantAccess("updateAny", "products"),
     updateProduct
   );
+
 // review
 router
   .route("/:id/reviews")
