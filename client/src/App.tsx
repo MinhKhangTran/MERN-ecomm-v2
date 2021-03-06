@@ -1,26 +1,46 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import * as React from "react";
+import { Box } from "@chakra-ui/react";
+import { Switch, Route, Redirect } from "react-router-dom";
+// Layout
+import Layout from "./components/Layout";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// Pages
+import Home from "./pages/Home";
+
+// Redux
+import { useSelector } from "react-redux";
+// Rootstate
+import { RootState } from "./store";
+
+// types
+interface IRoute {
+  path: string;
+  exact: boolean;
+  component: any;
+  private: boolean;
 }
 
-export default App;
+const routes: IRoute[] = [
+  {
+    path: "/",
+    exact: true,
+    component: Home,
+    private: false,
+  },
+];
+
+export default function App() {
+  return (
+    <Layout>
+      <Switch>
+        {routes.map((route, index) => {
+          return (
+            <Route key={index} path={route.path} exact={route.exact}>
+              <route.component />
+            </Route>
+          );
+        })}
+      </Switch>
+    </Layout>
+  );
+}
