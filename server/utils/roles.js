@@ -5,6 +5,7 @@ let grantsObject = {
     profile: {
       "read:any": ["*"],
       "delete:any": ["*"],
+      "update:any": ["*"],
     },
   },
   benutzer: {

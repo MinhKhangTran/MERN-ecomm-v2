@@ -8,6 +8,8 @@ import {
   updateProfileOwner,
   getAllUsers,
   deleteUser,
+  getUserById,
+  updateUser,
 } from "../controllers/users.js";
 
 // validator
@@ -15,6 +17,7 @@ import { runValidation } from "../validators/index.js";
 import {
   registerValidator,
   loginValidator,
+  updateUserAdminValidator,
 } from "../validators/userValidators.js";
 // authMiddleware
 import { protect } from "../middlewares/authMiddleware.js";
@@ -38,6 +41,14 @@ router.route("/").get(protect, grantAccess("readAny", "profile"), getAllUsers);
 // Delete a user Admin
 router
   .route("/:id")
-  .delete(protect, grantAccess("deleteAny", "profile"), deleteUser);
+  .delete(protect, grantAccess("deleteAny", "profile"), deleteUser)
+  .get(protect, grantAccess("readAny", "profile"), getUserById)
+  .put(
+    protect,
+    updateUserAdminValidator,
+    runValidation,
+    grantAccess("updateAny", "profile"),
+    updateUser
+  );
 
 export default router;

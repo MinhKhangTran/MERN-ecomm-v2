@@ -135,7 +135,34 @@ export const deleteUser = asyncHandler(async (req, res) => {
 // @desc    get User by ID
 // @route   GET api/a1/users/:id
 // @access  private/ADMIN
+export const getUserById = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id).select("-password");
+  if (!user) {
+    res.status(400);
+    throw new Error("Kein User gefunden!");
+  }
+  res.status(200).json(user);
+});
 
 // @desc    update a User
 // @route   PUT api/a1/users/:id
 // @access  private
+export const updateUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id).select("-password");
+  if (!user) {
+    res.status(400);
+    throw new Error("Kein User gefunden!");
+  }
+  const updatedUser = await User.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: {
+        username: req.body.username,
+        email: req.body.email,
+        role: req.body.role,
+      },
+    },
+    { new: true }
+  ).select("-password");
+  res.status(200).json(updatedUser);
+});
