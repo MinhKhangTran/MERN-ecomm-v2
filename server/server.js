@@ -10,6 +10,7 @@ import connectDB from "./config/db.js";
 // import routes
 import userRoutes from "./routes/users.js";
 import productRoutes from "./routes/products.js";
+import orderRoutes from "./routes/orders.js";
 
 // import made middlewares
 import { notFound, errorHandler } from "./middlewares/errorMiddleware.js";
@@ -33,6 +34,7 @@ app.use(express.json());
 // routes
 app.use("/api/a1/users", userRoutes);
 app.use("/api/a1/products", productRoutes);
+app.use("/api/a1/orders", orderRoutes);
 
 // error middleware
 app.use(notFound);
