@@ -9,6 +9,7 @@ import {
   updateProduct,
   createReview,
   getTopProducts,
+  paginateProducts,
 } from "../controllers/products.js";
 
 // validator
@@ -39,6 +40,8 @@ router
   );
 // get top 3
 router.route("/top").get(getTopProducts);
+// Pagination
+router.route("/paginate").post(paginateProducts);
 // get,delete,update single product
 router
   .route("/:id")

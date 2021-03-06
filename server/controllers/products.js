@@ -17,6 +17,26 @@ export const getAllProducts = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    paginate all Products
+// @route   POST api/a1/products/paginate
+// @access  public
+export const paginateProducts = asyncHandler(async (req, res) => {
+  const limit = req.body.limit ? req.body.limit : 5;
+  const aggQuery = Product.aggregate();
+  const options = {
+    page: req.body.page,
+    limit,
+    sort: { createdAt: -1 },
+  };
+  const products = await Product.aggregatePaginate(aggQuery, options);
+  if (products) {
+    res.status(200).json(products);
+  } else {
+    res.status(400);
+    throw new Error("Fehler beim fetchen");
+  }
+});
+
 // @desc    get Product by ID
 // @route   GET api/a1/products/:id
 // @access  public

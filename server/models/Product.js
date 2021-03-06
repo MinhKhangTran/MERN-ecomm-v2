@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import aggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 const reviewSchema = new mongoose.Schema(
   {
@@ -65,6 +66,8 @@ const productSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+productSchema.plugin(aggregatePaginate);
 
 const Product = mongoose.model("Product", productSchema);
 export default Product;
