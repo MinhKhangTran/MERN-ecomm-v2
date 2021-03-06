@@ -6,6 +6,8 @@ import {
   loginUser,
   getLoggedUser,
   updateProfileOwner,
+  getAllUsers,
+  deleteUser,
 } from "../controllers/users.js";
 
 // validator
@@ -17,6 +19,7 @@ import {
 // authMiddleware
 import { protect } from "../middlewares/authMiddleware.js";
 // roles
+import { grantAccess } from "../middlewares/roleMiddleware.js";
 
 // init route
 const router = express.Router();
@@ -29,6 +32,12 @@ router.route("/login").post(loginValidator, runValidation, loginUser);
 router
   .route("/me")
   .get(protect, getLoggedUser)
-  .put(protect, updateProfileOwner);
+  .put(protect, grantAccess("updateOwn", "profile"), updateProfileOwner);
+// get all users ADMIN
+router.route("/").get(protect, grantAccess("readAny", "profile"), getAllUsers);
+// Delete a user Admin
+router
+  .route("/:id")
+  .delete(protect, grantAccess("deleteAny", "profile"), deleteUser);
 
 export default router;

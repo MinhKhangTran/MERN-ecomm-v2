@@ -109,10 +109,28 @@ export const updateProfileOwner = asyncHandler(async (req, res) => {
 // @desc    get all User
 // @route   GET api/a1/users
 // @access  private/ADMIN
+export const getAllUsers = asyncHandler(async (req, res) => {
+  const users = await User.find().select("-password");
+  if (users) {
+    res.status(200).json(users);
+  } else {
+    res.status(400);
+    throw new Error("Fehler beim fetchen");
+  }
+});
 
 // @desc    delete a User
 // @route   DELETE api/a1/users/:id
 // @access  private/ADMIN
+export const deleteUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    res.status(400);
+    throw new Error("Kein User gefunden!");
+  }
+  await user.remove();
+  res.status(200).json({ msg: "User wurde gelöscht" });
+});
 
 // @desc    get User by ID
 // @route   GET api/a1/users/:id
