@@ -5,11 +5,18 @@ import {
   getAllProducts,
   getProductById,
   createProduct,
+  deleteProduct,
+  updateProduct,
+  createReview,
 } from "../controllers/products.js";
 
 // validator
 import { runValidation } from "../validators/index.js";
-import { createProductAdminValidator } from "../validators/productValidator.js";
+import {
+  createProductAdminValidator,
+  updateProductAdminValidator,
+  reviewValidator,
+} from "../validators/productValidator.js";
 // authMiddleware
 import { protect } from "../middlewares/authMiddleware.js";
 // roles
@@ -30,14 +37,20 @@ router
     createProduct
   );
 // get,delete,update single product
-router.route("/:id").get(getProductById);
-//   .delete(protect, grantAccess("deleteAny", "profile"), deleteUser)
-//   .put(
-//     protect,
-//     updateUserAdminValidator,
-//     runValidation,
-//     grantAccess("updateAny", "profile"),
-//     updateUser
-//   );
+router
+  .route("/:id")
+  .get(getProductById)
+  .delete(protect, grantAccess("deleteAny", "products"), deleteProduct)
+  .put(
+    protect,
+    updateProductAdminValidator,
+    runValidation,
+    grantAccess("updateAny", "products"),
+    updateProduct
+  );
+// review
+router
+  .route("/:id/reviews")
+  .post(protect, reviewValidator, runValidation, createReview);
 
 export default router;
