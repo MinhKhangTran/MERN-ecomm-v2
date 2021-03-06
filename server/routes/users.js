@@ -38,7 +38,7 @@ router
   .put(protect, grantAccess("updateOwn", "profile"), updateProfileOwner);
 // get all users ADMIN
 router.route("/").get(protect, grantAccess("readAny", "profile"), getAllUsers);
-// Delete a user Admin
+// Delete,get,Update a user ADMIN
 router
   .route("/:id")
   .delete(protect, grantAccess("deleteAny", "profile"), deleteUser)

@@ -7,6 +7,9 @@ let grantsObject = {
       "delete:any": ["*"],
       "update:any": ["*"],
     },
+    products: {
+      "create:any": ["*"],
+    },
   },
   benutzer: {
     profile: {
