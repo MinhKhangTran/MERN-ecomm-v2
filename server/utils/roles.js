@@ -12,10 +12,16 @@ let grantsObject = {
       "delete:any": ["*"],
       "update:any": ["*"],
     },
+    orders: {
+      "read:any": ["*"],
+    },
   },
   benutzer: {
     profile: {
       "update:own": ["*"],
+    },
+    orders: {
+      "read:own": ["*"],
     },
   },
 };

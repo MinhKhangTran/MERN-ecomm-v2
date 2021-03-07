@@ -4,7 +4,6 @@ import express from "express";
 import {
   getAllOrders,
   getMyOrders,
-  updateOrderToDelivered,
   updateOrderToPaid,
   getOrderById,
   createOrder,
@@ -12,7 +11,7 @@ import {
 
 // validator
 import { runValidation } from "../validators/index.js";
-import {} from "../validators/orderValidator.js";
+import { createOrderValidator } from "../validators/orderValidators.js";
 // authMiddleware
 import { protect } from "../middlewares/authMiddleware.js";
 // roles
@@ -21,10 +20,15 @@ import { grantAccess } from "../middlewares/roleMiddleware.js";
 // init route
 const router = express.Router();
 
-router.route("/");
-router.route("/myorders");
-router.route("/:id");
-router.route("/:id/pay");
-router.route("/:id/deliver");
+// create order
+router
+  .route("/")
+  .post(protect, createOrder)
+  .get(protect, grantAccess("readAny", "orders"), getAllOrders);
+router
+  .route("/myorders")
+  .get(protect, grantAccess("readOwn", "orders"), getMyOrders);
+router.route("/:id").get(protect, getOrderById);
+router.route("/:id/pay").put(protect, updateOrderToPaid);
 
 export default router;
