@@ -14,10 +14,6 @@ const products = [
     numReviews: 0,
     user: {
       _id: "6044accba24d5757b8d78e14",
-      username: "francis",
-      email: "francis@example.com",
-      password: bcrypt.hashSync("francis123456", 10),
-      role: "admin",
     },
   },
   {
@@ -33,10 +29,6 @@ const products = [
     numReviews: 0,
     user: {
       _id: "6044accba24d5757b8d78e14",
-      username: "francis",
-      email: "francis@example.com",
-      password: bcrypt.hashSync("francis123456", 10),
-      role: "admin",
     },
   },
   {
@@ -52,10 +44,6 @@ const products = [
     numReviews: 0,
     user: {
       _id: "6044accba24d5757b8d78e14",
-      username: "francis",
-      email: "francis@example.com",
-      password: bcrypt.hashSync("francis123456", 10),
-      role: "admin",
     },
   },
   {
@@ -71,10 +59,6 @@ const products = [
     numReviews: 0,
     user: {
       _id: "6044accba24d5757b8d78e14",
-      username: "francis",
-      email: "francis@example.com",
-      password: bcrypt.hashSync("francis123456", 10),
-      role: "admin",
     },
   },
   {
@@ -90,10 +74,6 @@ const products = [
     numReviews: 0,
     user: {
       _id: "6044accba24d5757b8d78e14",
-      username: "francis",
-      email: "francis@example.com",
-      password: bcrypt.hashSync("francis123456", 10),
-      role: "admin",
     },
   },
   {
@@ -109,10 +89,6 @@ const products = [
     numReviews: 0,
     user: {
       _id: "6044accba24d5757b8d78e14",
-      username: "francis",
-      email: "francis@example.com",
-      password: bcrypt.hashSync("francis123456", 10),
-      role: "admin",
     },
   },
 ];
