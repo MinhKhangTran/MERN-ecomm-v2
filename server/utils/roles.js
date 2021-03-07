@@ -15,6 +15,9 @@ let grantsObject = {
     orders: {
       "read:any": ["*"],
     },
+    uploads: {
+      "create:any": ["*"],
+    },
   },
   benutzer: {
     profile: {
