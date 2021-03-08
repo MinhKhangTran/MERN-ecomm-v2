@@ -9,7 +9,7 @@ interface IUserInfo {
   username: string;
   email: string;
   token: string;
-  role: string;
+  role: "benutzer" | "admin";
 }
 interface IInitState {
   loading: boolean;
@@ -26,7 +26,7 @@ const initState: IInitState = {
     email: "",
     token: "",
     _id: "",
-    role: "",
+    role: "benutzer",
   },
 };
 
@@ -53,17 +53,43 @@ export const login = createAsyncThunk(
     }
   }
 );
-// Logout
+
+// register
+export const register = createAsyncThunk(
+  "users/register",
+  async (
+    {
+      username,
+      email,
+      password,
+    }: { username: string; email: string; password: string },
+    { dispatch, rejectWithValue }
+  ) => {
+    try {
+      const { data } = await axios.post("/api/a1/users/register", {
+        username,
+        email,
+        password,
+      });
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      dispatch(toastSuccess("Wilkommen"));
+      return data;
+    } catch (error) {
+      // toast
+      dispatch(toastError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
 // Logout
 export const logoutUser = createAsyncThunk(
-  "login/logout",
+  "users/logout",
   async (_, { dispatch }) => {
     dispatch(toastSuccess("Bis bald :D"));
     localStorage.removeItem("userInfo");
     return initState;
   }
 );
-// register
 // get logged user
 // update Profile
 // get Profiles ADMIN
@@ -85,6 +111,19 @@ export const userSlice = createSlice({
       state.userInfo = payload;
     });
     builder.addCase(login.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
+    // Register
+    builder.addCase(register.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(register.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.error = "";
+      state.userInfo = payload;
+    });
+    builder.addCase(register.rejected, (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     });

@@ -19,7 +19,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
-// import { login } from "./userSlice";
+import { register } from "./userSlice";
 import { RootState } from "../../store";
 
 const Register = () => {
@@ -37,7 +37,9 @@ const Register = () => {
         .min(6, "mindestens 6 Zeichen!"),
     }),
     onSubmit: (daten, { resetForm }) => {
-      console.log(daten);
+      // console.log(daten);
+      dispatch(register(daten));
+      resetForm();
     },
   });
   React.useEffect(() => {

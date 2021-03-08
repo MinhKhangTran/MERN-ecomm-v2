@@ -8,7 +8,7 @@ interface IUserInit {
   email: string;
   token: string;
   _id: string;
-  role: string;
+  role: "benutzer" | "admin";
 }
 
 const userInit: IUserInit = {
@@ -16,7 +16,7 @@ const userInit: IUserInit = {
   email: "",
   token: "",
   _id: "",
-  role: "",
+  role: "benutzer",
 };
 
 // initState from localStorage

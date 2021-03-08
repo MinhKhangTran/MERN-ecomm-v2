@@ -29,7 +29,7 @@ export const registerUser = asyncHandler(async (req, res) => {
       username: newUser.username,
       email: newUser.email,
       token: generateToken(newUser._id),
-      role: user.role,
+      role: newUser.role,
     });
   } else {
     res.status(400);
