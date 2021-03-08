@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Grid, Spinner } from "@chakra-ui/react";
+import { Box, Grid, Spinner, Heading } from "@chakra-ui/react";
 // Redux
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts } from "./productSlice";
@@ -16,20 +16,26 @@ const ProductList = () => {
     (state: RootState) => state.products
   );
   if (loading) {
-    <Box>
-      <Spinner color="gray.500" />
-    </Box>;
+    return (
+      <Box>
+        <Heading color="orange.400">Unsere Produkte</Heading>
+        <Spinner color="orange.400" />
+      </Box>
+    );
   }
   return (
-    <Grid
-      my={8}
-      templateColumns={{ base: "repeat(1,1fr)", md: "repeat(3,1fr)" }}
-      gap={6}
-    >
-      {productInfo?.map((product) => {
-        return <ProductItem key={product._id} {...product} />;
-      })}
-    </Grid>
+    <Box>
+      <Heading color="orange.400">Unsere Produkte</Heading>
+      <Grid
+        my={8}
+        templateColumns={{ base: "repeat(1,1fr)", md: "repeat(3,1fr)" }}
+        gap={6}
+      >
+        {productInfo?.map((product) => {
+          return <ProductItem key={product._id} {...product} single={false} />;
+        })}
+      </Grid>
+    </Box>
   );
 };
 

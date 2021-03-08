@@ -6,6 +6,8 @@ import Layout from "./components/Layout";
 
 // Pages
 import Home from "./pages/Home";
+import ProductList from "./features/products/ProductList";
+import SingleProduct from "./features/products/SingleProduct";
 
 // Redux
 import { useSelector } from "react-redux";
@@ -24,7 +26,13 @@ const routes: IRoute[] = [
   {
     path: "/",
     exact: true,
-    component: Home,
+    component: ProductList,
+    private: false,
+  },
+  {
+    path: "/products/:id",
+    exact: false,
+    component: SingleProduct,
     private: false,
   },
 ];

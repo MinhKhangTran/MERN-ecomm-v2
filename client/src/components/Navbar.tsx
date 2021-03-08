@@ -19,20 +19,24 @@ const Navbar = () => {
   return (
     <Box bg="blackAlpha.200">
       <Flex p={4} align="center" w="90%" mx="auto">
-        <Icon
-          boxSize={{ base: "10", md: "16" }}
-          color="blackAlpha.600"
-          as={MdStoreMallDirectory}
-        ></Icon>
-        <Text
-          display={{ base: "none", md: "block" }}
-          fontWeight="semibold"
-          color="blackAlpha.700"
-          ml={4}
-          fontSize="2xl"
-        >
-          <Link to="/">Gönner-Shop</Link>
-        </Text>
+        <Link to="/">
+          <Flex align="center">
+            <Icon
+              boxSize={{ base: "10", md: "16" }}
+              color="blackAlpha.600"
+              as={MdStoreMallDirectory}
+            ></Icon>
+            <Text
+              display={{ base: "none", md: "block" }}
+              fontWeight="semibold"
+              color="blackAlpha.700"
+              ml={4}
+              fontSize="2xl"
+            >
+              Gönner-Shop
+            </Text>
+          </Flex>
+        </Link>
         <Spacer />
         <Box position="relative">
           <Icon
