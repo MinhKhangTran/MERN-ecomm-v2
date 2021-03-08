@@ -7,6 +7,11 @@ import {
   Heading,
   Icon,
   IconButton,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
   Spacer,
   Text,
 } from "@chakra-ui/react";
@@ -19,8 +24,10 @@ import { FaShoppingCart } from "react-icons/fa";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
+import { logoutUser } from "../features/users/userSlice";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
   const { userInfo } = useSelector((state: RootState) => state.users);
   return (
     <Box bg="blackAlpha.200">
@@ -47,25 +54,48 @@ const Navbar = () => {
         {userInfo?._id.length !== 0 ? (
           <>
             <Box position="relative">
-              <Icon
-                boxSize={{ base: "6", md: "8" }}
-                color="blackAlpha.600"
-                as={FaShoppingCart}
-              />
-              <Center
-                w="20px"
-                h="20px"
-                bg="orange.400"
-                borderRadius="full"
-                position="absolute"
-                top="-2"
-                right="-2"
-              >
-                1
-              </Center>
+              <Link to="/cart">
+                <Icon
+                  boxSize={{ base: "6", md: "8" }}
+                  color="blackAlpha.600"
+                  as={FaShoppingCart}
+                />
+                <Center
+                  w="20px"
+                  h="20px"
+                  bg="orange.400"
+                  borderRadius="full"
+                  position="absolute"
+                  top="-2"
+                  right="-2"
+                >
+                  1
+                </Center>
+              </Link>
             </Box>
             <Box>
               <Avatar size="md" ml={8} name={userInfo?.username} />
+              <Menu>
+                <MenuButton ml={2} variant="ghost" as={Button}>
+                  <Text casing="capitalize">{userInfo?.username}</Text>
+                </MenuButton>
+                <MenuList>
+                  <MenuItem>Dein Profil</MenuItem>
+                  {userInfo?.role === "admin" && (
+                    <MenuItem>Admin Profil</MenuItem>
+                  )}
+
+                  <MenuDivider />
+                  <MenuItem
+                    cursor="pointer"
+                    onClick={() => {
+                      dispatch(logoutUser());
+                    }}
+                  >
+                    Logout
+                  </MenuItem>
+                </MenuList>
+              </Menu>
             </Box>
           </>
         ) : (

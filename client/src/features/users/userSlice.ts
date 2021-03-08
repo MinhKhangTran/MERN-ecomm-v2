@@ -9,6 +9,7 @@ interface IUserInfo {
   username: string;
   email: string;
   token: string;
+  role: string;
 }
 interface IInitState {
   loading: boolean;
@@ -20,7 +21,13 @@ interface IInitState {
 const initState: IInitState = {
   loading: false,
   error: "",
-  userInfo: null,
+  userInfo: {
+    username: "",
+    email: "",
+    token: "",
+    _id: "",
+    role: "",
+  },
 };
 
 // async actions
@@ -44,6 +51,16 @@ export const login = createAsyncThunk(
       dispatch(toastError(error.response.data.message));
       return rejectWithValue(error.response.data.message);
     }
+  }
+);
+// Logout
+// Logout
+export const logoutUser = createAsyncThunk(
+  "login/logout",
+  async (_, { dispatch }) => {
+    dispatch(toastSuccess("Bis bald :D"));
+    localStorage.removeItem("userInfo");
+    return initState;
   }
 );
 // register
@@ -70,6 +87,11 @@ export const userSlice = createSlice({
     builder.addCase(login.rejected, (state, { payload }) => {
       state.loading = false;
       state.error = payload;
+    });
+    // ======================LOGOUT======================
+
+    builder.addCase(logoutUser.fulfilled, (state) => {
+      return initState;
     });
   },
 });
