@@ -6,6 +6,7 @@ import {
   Flex,
   Heading,
   Icon,
+  IconButton,
   Spacer,
   Text,
 } from "@chakra-ui/react";
@@ -38,7 +39,12 @@ const Navbar = () => {
           </Flex>
         </Link>
         <Spacer />
-        <Box position="relative">
+        <Box>
+          <Button colorScheme="orange" variant="outline">
+            <Link to="/login">Login</Link>
+          </Button>
+        </Box>
+        {/* <Box position="relative">
           <Icon
             boxSize={{ base: "6", md: "8" }}
             color="blackAlpha.600"
@@ -63,7 +69,7 @@ const Navbar = () => {
             name="Dan Abrahmov"
             src="https://bit.ly/dan-abramov"
           />
-        </Box>
+        </Box> */}
       </Flex>
     </Box>
   );

@@ -5,9 +5,10 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import Layout from "./components/Layout";
 
 // Pages
-import Home from "./pages/Home";
 import ProductList from "./features/products/ProductList";
 import SingleProduct from "./features/products/SingleProduct";
+import Login from "./features/users/Login";
+import Register from "./features/users/Register";
 
 // Redux
 import { useSelector } from "react-redux";
@@ -33,6 +34,18 @@ const routes: IRoute[] = [
     path: "/products/:id",
     exact: false,
     component: SingleProduct,
+    private: false,
+  },
+  {
+    path: "/login",
+    exact: false,
+    component: Login,
+    private: false,
+  },
+  {
+    path: "/register",
+    exact: false,
+    component: Register,
     private: false,
   },
 ];
