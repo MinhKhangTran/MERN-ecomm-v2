@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { toastError } from "../toast/toastSlice";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -40,10 +41,12 @@ export const getAllProducts = createAsyncThunk(
   async (_, { dispatch, rejectWithValue }) => {
     try {
       const { data } = await axios.get("/api/a1/products");
-      console.log(data);
+      // console.log(data);
       return data;
     } catch (error) {
-      console.log(error);
+      // toast
+      dispatch(toastError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
     }
   }
 );
@@ -55,7 +58,9 @@ export const getProductById = createAsyncThunk(
       const { data } = await axios.get(`/api/a1/products/${id}`);
       return data;
     } catch (error) {
-      console.log(error);
+      // toast
+      dispatch(toastError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
     }
   }
 );

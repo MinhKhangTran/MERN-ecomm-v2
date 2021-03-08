@@ -1,13 +1,19 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { toastError, toastSuccess } from "../toast/toastSlice";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 // types
-interface IUserInfo {}
+interface IUserInfo {
+  _id: string;
+  username: string;
+  email: string;
+  token: string;
+}
 interface IInitState {
   loading: boolean;
   error: any;
-  userInfo: any | null;
+  userInfo: IUserInfo | null;
 }
 
 // initState
@@ -30,9 +36,13 @@ export const login = createAsyncThunk(
         email,
         password,
       });
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      dispatch(toastSuccess("Willkommen zurück"));
       return data;
     } catch (error) {
-      console.log(error);
+      // toast
+      dispatch(toastError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
     }
   }
 );

@@ -12,12 +12,20 @@ import {
   IconButton,
   Button,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 // Formik und yup
 import { useFormik } from "formik";
 import * as Yup from "yup";
+// Redux
+import { useSelector, useDispatch } from "react-redux";
+import { login } from "./userSlice";
+import { RootState } from "../../store";
+
 const Login = () => {
+  const dispatch = useDispatch();
+  const { userInfo, loading } = useSelector((state: RootState) => state.users);
+  const history = useHistory();
   const [showPW, setShowPW] = React.useState(false);
   const formik = useFormik({
     initialValues: { email: "", password: "" },
@@ -28,9 +36,16 @@ const Login = () => {
         .min(6, "mindestens 6 Zeichen!"),
     }),
     onSubmit: (daten, { resetForm }) => {
-      console.log(daten);
+      dispatch(login(daten));
+      //   console.log(daten);
+      resetForm();
     },
   });
+  React.useEffect(() => {
+    if (userInfo?._id.length !== 0) {
+      history.push("/");
+    }
+  }, [history, userInfo]);
   return (
     <Box
       bgGradient="linear(to-l,orange.50,orange.100)"
@@ -101,7 +116,7 @@ const Login = () => {
           <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
         </FormControl>
 
-        <Button mt={8} colorScheme="orange" type="submit">
+        <Button isLoading={loading} mt={8} colorScheme="orange" type="submit">
           Login
         </Button>
         <Text mt={4} fontStyle="italic">

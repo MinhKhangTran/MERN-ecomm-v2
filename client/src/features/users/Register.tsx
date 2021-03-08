@@ -12,12 +12,20 @@ import {
   IconButton,
   Button,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 // Formik und yup
 import { useFormik } from "formik";
 import * as Yup from "yup";
+// Redux
+import { useSelector, useDispatch } from "react-redux";
+// import { login } from "./userSlice";
+import { RootState } from "../../store";
+
 const Register = () => {
+  const dispatch = useDispatch();
+  const { userInfo, loading } = useSelector((state: RootState) => state.users);
+  const history = useHistory();
   const [showPW, setShowPW] = React.useState(false);
   const formik = useFormik({
     initialValues: { username: "", email: "", password: "" },
@@ -32,6 +40,11 @@ const Register = () => {
       console.log(daten);
     },
   });
+  React.useEffect(() => {
+    if (userInfo?._id.length !== 0) {
+      history.push("/");
+    }
+  }, [history, userInfo]);
   return (
     <Box
       bgGradient="linear(to-l,orange.50,orange.100)"
@@ -43,7 +56,7 @@ const Register = () => {
       mx="auto"
     >
       <Heading bgGradient="linear(to-l,orange.400,orange.600)" bgClip="text">
-        Register
+        Anmeldung
       </Heading>
       <form onSubmit={formik.handleSubmit}>
         {/* Email */}
@@ -123,8 +136,8 @@ const Register = () => {
           <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
         </FormControl>
 
-        <Button mt={8} colorScheme="orange" type="submit">
-          Register
+        <Button isLoading={loading} mt={8} colorScheme="orange" type="submit">
+          Anmelden
         </Button>
         <Text mt={4} fontStyle="italic">
           Schon ein Account?{" "}
