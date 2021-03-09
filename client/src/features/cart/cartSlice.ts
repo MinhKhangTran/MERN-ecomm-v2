@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../../store";
 import { toastError, toastSuccess } from "../toast/toastSlice";
@@ -13,6 +13,7 @@ interface ICartInfo {
   qty: number;
   price: number;
   _id: string;
+  countInStock: number;
 }
 interface IInitState {
   loading: boolean;
@@ -55,6 +56,12 @@ export const addToCart = createAsyncThunk(
   }
 );
 // remove
+// export const removeFromCart = createAsyncThunk(
+//   "cart/removeFromCart",
+//   async ({id}:{id:string},{dispatch,rejectWithValue,getState}) => {
+
+//   }
+// );
 // save shipping address in local
 // save payment method
 
@@ -62,7 +69,17 @@ export const addToCart = createAsyncThunk(
 export const cartSlice = createSlice({
   name: "cart",
   initialState: initState,
-  reducers: {},
+  reducers: {
+    removeFromCart: (state, { payload }: PayloadAction<{ id: string }>) => {
+      const index = state.cartInfo.findIndex(
+        (cartItem) => cartItem._id === payload.id
+      );
+      if (index !== -1) {
+        state.cartInfo.splice(index, 1);
+        localStorage.setItem("cartInfo", JSON.stringify(state.cartInfo));
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(addToCart.pending, (state) => {
       state.loading = true;
@@ -96,3 +113,5 @@ export const cartSlice = createSlice({
     });
   },
 });
+
+export const { removeFromCart } = cartSlice.actions;
