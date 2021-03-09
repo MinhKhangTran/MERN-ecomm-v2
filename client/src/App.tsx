@@ -9,6 +9,7 @@ import ProductList from "./features/products/ProductList";
 import SingleProduct from "./features/products/SingleProduct";
 import Login from "./features/users/Login";
 import Register from "./features/users/Register";
+import CartPage from "./features/cart/CartPage";
 
 // Redux
 import { useSelector } from "react-redux";
@@ -46,6 +47,12 @@ const routes: IRoute[] = [
     path: "/register",
     exact: false,
     component: Register,
+    private: false,
+  },
+  {
+    path: "/cart/:id?",
+    exact: false,
+    component: CartPage,
     private: false,
   },
 ];

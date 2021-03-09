@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { userSlice } from "../features/users/userSlice";
 import { productSlice } from "../features/products/productSlice";
 import { toastSlice } from "../features/toast/toastSlice";
+import { cartSlice } from "../features/cart/cartSlice";
 
 interface IUserInit {
   username: string;
@@ -28,6 +29,14 @@ const userInfoFromLocalStorage = () => {
     return userInit;
   }
 };
+const cartInfoFromLocalStorage = () => {
+  const cartInfo = localStorage.getItem("cartInfo");
+  if (cartInfo) {
+    return JSON.parse(cartInfo);
+  } else {
+    return [];
+  }
+};
 
 // types
 interface IPreloadedState {
@@ -35,6 +44,9 @@ interface IPreloadedState {
     userInfo: IUserInit;
     loading: boolean;
     error: any;
+  };
+  cart: {
+    cartInfo: [];
   };
 }
 
@@ -44,6 +56,9 @@ const preloadedState: IPreloadedState = {
     loading: false,
     error: "",
   },
+  cart: {
+    cartInfo: cartInfoFromLocalStorage(),
+  },
 };
 
 // configure Store
@@ -52,6 +67,7 @@ export const store = configureStore({
     users: userSlice.reducer,
     products: productSlice.reducer,
     toast: toastSlice.reducer,
+    cart: cartSlice.reducer,
   },
   preloadedState,
 });

@@ -26,7 +26,6 @@ const ProductItem = ({
   brand,
   category,
   countInStock,
-  createdAt,
   desc,
   image,
   name,
@@ -36,6 +35,8 @@ const ProductItem = ({
   reviews,
   single,
 }: IProductItem) => {
+  const [qty, setQty] = React.useState(0);
+
   if (single) {
     return (
       <Box p={4}>
@@ -91,6 +92,9 @@ const ProductItem = ({
                 variant="flushed"
                 placeholder="Menge"
                 mt={2}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                  setQty(parseInt(e.target.value));
+                }}
               >
                 {Array.from({ length: countInStock }, (_, index) => {
                   return (
@@ -102,8 +106,13 @@ const ProductItem = ({
               </Select>
             )}
 
-            <Button mt={6} display="block" colorScheme="orange">
-              <Link to={`/products/${_id}`}>In den Warenkorb</Link>
+            <Button
+              mt={6}
+              display="block"
+              colorScheme="orange"
+              isDisabled={countInStock === 0 || qty < 1}
+            >
+              <Link to={`/cart/${_id}?qty=${qty}`}>In den Warenkorb</Link>
             </Button>
           </Box>
         </Grid>
