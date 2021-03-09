@@ -31,6 +31,13 @@ const CartPage = () => {
     }
   }, [id, qty, dispatch]);
   const { cartInfo } = useSelector((state: RootState) => state.cart);
+  if (cartInfo.length === 0) {
+    return (
+      <Box>
+        <Text>Dein Einkaufskorb ist leider leer</Text>
+      </Box>
+    );
+  }
   return (
     <Box>
       {cartInfo.map((item) => {

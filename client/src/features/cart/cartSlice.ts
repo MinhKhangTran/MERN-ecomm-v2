@@ -101,7 +101,7 @@ export const cartSlice = createSlice({
       const valueIn = state.cartInfo.some((x) => x._id === item._id);
       if (valueIn) {
         console.log("schon drin");
-        state.cartInfo?.map((x) => (x._id === item._id ? item.qty : x.qty));
+        state.cartInfo = state.cartInfo?.map((x) => (x._id === item._id ? item : x));
       } else {
         console.log("eingefügt");
         state.cartInfo?.push(item);

@@ -29,6 +29,7 @@ import { logoutUser } from "../features/users/userSlice";
 const Navbar = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state: RootState) => state.users);
+  const { cartInfo } = useSelector((state: RootState) => state.cart);
   return (
     <Box bg="blackAlpha.200">
       <Flex p={4} align="center" w="90%" mx="auto">
@@ -69,7 +70,7 @@ const Navbar = () => {
                   top="-2"
                   right="-2"
                 >
-                  1
+                  {cartInfo.length}
                 </Center>
               </Link>
             </Box>
@@ -99,11 +100,34 @@ const Navbar = () => {
             </Box>
           </>
         ) : (
-          <Box>
-            <Button colorScheme="orange" variant="outline">
-              <Link to="/login">Login</Link>
-            </Button>
-          </Box>
+          <>
+            <Box position="relative" mr={6}>
+              <Link to="/cart">
+                <Icon
+                  boxSize={{ base: "6", md: "8" }}
+                  color="blackAlpha.600"
+                  as={FaShoppingCart}
+                />
+                <Center
+                  w="20px"
+                  h="20px"
+                  bg="orange.400"
+                  borderRadius="full"
+                  position="absolute"
+                  top="-2"
+                  right="-2"
+                >
+                  {cartInfo.length}
+                </Center>
+              </Link>
+            </Box>
+
+            <Box>
+              <Button colorScheme="orange" variant="outline">
+                <Link to="/login">Login</Link>
+              </Button>
+            </Box>
+          </>
         )}
       </Flex>
     </Box>
