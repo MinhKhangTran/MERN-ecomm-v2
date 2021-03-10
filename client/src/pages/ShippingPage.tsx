@@ -6,11 +6,8 @@ import {
   FormErrorMessage,
   Input,
   Heading,
-  Text,
-  InputGroup,
-  InputRightElement,
-  IconButton,
   Button,
+  Select,
 } from "@chakra-ui/react";
 import { Link, useHistory } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -19,21 +16,30 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
+import { saveShipingAddress } from "../features/cart/cartSlice";
 
 const ShippingPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const [showPW, setShowPW] = React.useState(false);
+
   const formik = useFormik({
-    initialValues: { email: "", password: "" },
+    initialValues: {
+      address: "",
+      city: "",
+      plz: "",
+      country: "",
+      //   paymentMethod: "",
+    },
     validationSchema: Yup.object({
-      email: Yup.string().email().required("Eine Email ist nötig!"),
-      password: Yup.string()
-        .required("Ein Passwort ist nötig!")
-        .min(6, "mindestens 6 Zeichen!"),
+      address: Yup.string().required("Eine Adresse ist nötig!"),
+      city: Yup.string().required("Eine Stadt ist nötig!"),
+      plz: Yup.string().required("Eine Postleitzahl ist nötig!"),
+      country: Yup.string().required("Ein Land ist nötig!"),
+      //   paymentMehtod: Yup.string().required("Eine Methode ist nötig"),
     }),
     onSubmit: (daten, { resetForm }) => {
       console.log(daten);
+      dispatch(saveShipingAddress(daten));
       resetForm();
     },
   });
@@ -43,79 +49,126 @@ const ShippingPage = () => {
         Versand
       </Heading>
       <form onSubmit={formik.handleSubmit}>
-        {/* Email */}
+        {/* Address */}
         <FormControl
-          isInvalid={!!formik.errors.email && formik.touched.email}
-          id="email"
+          isInvalid={!!formik.errors.address && formik.touched.address}
+          id="address"
           mt={4}
         >
           <FormLabel
             bgGradient="linear(to-l,orange.400,orange.600)"
             bgClip="text"
           >
-            E-Mail
+            Adresse
           </FormLabel>
           <Input
             variant="flushed"
             type="text"
-            placeholder="E-Mail Adresse"
-            {...formik.getFieldProps("email")}
+            placeholder="Adresse"
+            {...formik.getFieldProps("address")}
           />
 
-          <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+          <FormErrorMessage>{formik.errors.address}</FormErrorMessage>
         </FormControl>
 
-        {/* Password */}
+        {/* city */}
         <FormControl
-          isInvalid={!!formik.errors.password && formik.touched.password}
-          id="password"
+          isInvalid={!!formik.errors.city && formik.touched.city}
+          id="city"
           mt={4}
         >
           <FormLabel
             bgGradient="linear(to-l,orange.400,orange.600)"
             bgClip="text"
           >
-            Password
+            Stadt
           </FormLabel>
-          <InputGroup>
-            <Input
-              variant="flushed"
-              type={showPW ? "text" : "password"}
-              placeholder="******"
-              {...formik.getFieldProps("password")}
-            />
-            <InputRightElement width="4.5rem">
-              <IconButton
-                aria-label="hide/show password"
-                onClick={() => setShowPW(!showPW)}
-                variant="ghost"
-                colorScheme="orange"
-                h="1.75rem"
-              >
-                {showPW ? <FaEyeSlash /> : <FaEye />}
-              </IconButton>
-            </InputRightElement>
-          </InputGroup>
-          <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
+
+          <Input
+            variant="flushed"
+            type="text"
+            placeholder="Stadt"
+            {...formik.getFieldProps("city")}
+          />
+
+          <FormErrorMessage>{formik.errors.city}</FormErrorMessage>
         </FormControl>
+        {/* plz */}
+        <FormControl
+          isInvalid={!!formik.errors.plz && formik.touched.plz}
+          id="plz"
+          mt={4}
+        >
+          <FormLabel
+            bgGradient="linear(to-l,orange.400,orange.600)"
+            bgClip="text"
+          >
+            Postleitzahl
+          </FormLabel>
+
+          <Input
+            variant="flushed"
+            type="text"
+            placeholder="Postleitzahl"
+            {...formik.getFieldProps("plz")}
+          />
+
+          <FormErrorMessage>{formik.errors.plz}</FormErrorMessage>
+        </FormControl>
+        {/* country */}
+        <FormControl
+          isInvalid={!!formik.errors.country && formik.touched.country}
+          id="country"
+          mt={4}
+        >
+          <FormLabel
+            bgGradient="linear(to-l,orange.400,orange.600)"
+            bgClip="text"
+          >
+            Land
+          </FormLabel>
+
+          <Input
+            variant="flushed"
+            type="text"
+            placeholder="Land"
+            {...formik.getFieldProps("country")}
+          />
+
+          <FormErrorMessage>{formik.errors.country}</FormErrorMessage>
+        </FormControl>
+        {/* Bezahlmethode */}
+        {/* <FormControl
+          isInvalid={
+            !!formik.errors.paymentMethod && formik.touched.paymentMethod
+          }
+          id="paymentMethod"
+          mt={4}
+        >
+          <FormLabel
+            bgGradient="linear(to-l,orange.400,orange.600)"
+            bgClip="text"
+          >
+            Bezahlmethode
+          </FormLabel>
+
+          <Select
+            variant="flushed"
+            type="text"
+            placeholder="Bezahlmethode"
+            {...formik.getFieldProps("paymentMethod")}
+          >
+            <option value="paypal">PayPal</option>
+            <option value="creditcard">Kreditkarte</option>
+          </Select>
+
+          <FormErrorMessage>{formik.errors.paymentMethod}</FormErrorMessage>
+        </FormControl> */}
 
         <Button mt={8} colorScheme="orange" type="submit">
-          Login
+          {/* Checkout */}
+          <Link to="/checkout">Checkout</Link>
         </Button>
-        <Text mt={4} fontStyle="italic">
-          Noch kein Account?{" "}
-          <Link to="/register">
-            <Text
-              as="span"
-              cursor="pointer"
-              bgGradient="linear(to-l,orange.400,orange.600)"
-              bgClip="text"
-            >
-              hier klicken
-            </Text>
-          </Link>{" "}
-          um sich anzumelden!
-        </Text>
       </form>
     </Box>
   );

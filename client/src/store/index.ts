@@ -37,6 +37,14 @@ const cartInfoFromLocalStorage = () => {
     return [];
   }
 };
+const shipingAddressFromLocalStorage = () => {
+  const shipingAddress = localStorage.getItem("shipingAddress");
+  if (shipingAddress) {
+    return JSON.parse(shipingAddress);
+  } else {
+    return null;
+  }
+};
 
 // types
 interface IPreloadedState {
@@ -47,6 +55,7 @@ interface IPreloadedState {
   };
   cart: {
     cartInfo: [];
+    shipingAddress?: null;
   };
 }
 
@@ -58,6 +67,7 @@ const preloadedState: IPreloadedState = {
   },
   cart: {
     cartInfo: cartInfoFromLocalStorage(),
+    shipingAddress: shipingAddressFromLocalStorage(),
   },
 };
 

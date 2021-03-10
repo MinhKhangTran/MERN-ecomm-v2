@@ -15,10 +15,17 @@ interface ICartInfo {
   _id: string;
   countInStock: number;
 }
+interface IShipingAddress {
+  address: string;
+  city: string;
+  plz: string;
+  country: string;
+}
 interface IInitState {
   loading: boolean;
   error: any;
   cartInfo: ICartInfo[];
+  shipingAddress?: IShipingAddress | null;
 }
 
 // initState
@@ -26,6 +33,7 @@ const initState: IInitState = {
   loading: false,
   error: "",
   cartInfo: [],
+  shipingAddress: null,
 };
 
 // Async actions
@@ -79,6 +87,23 @@ export const cartSlice = createSlice({
         localStorage.setItem("cartInfo", JSON.stringify(state.cartInfo));
       }
     },
+    saveShipingAddress: (
+      state,
+      {
+        payload,
+      }: PayloadAction<{
+        address: string;
+        city: string;
+        plz: string;
+        country: string;
+      }>
+    ) => {
+      state.shipingAddress = payload;
+      localStorage.setItem(
+        "shipingAddress",
+        JSON.stringify(state.shipingAddress)
+      );
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(addToCart.pending, (state) => {
@@ -101,7 +126,9 @@ export const cartSlice = createSlice({
       const valueIn = state.cartInfo.some((x) => x._id === item._id);
       if (valueIn) {
         console.log("schon drin");
-        state.cartInfo = state.cartInfo?.map((x) => (x._id === item._id ? item : x));
+        state.cartInfo = state.cartInfo?.map((x) =>
+          x._id === item._id ? item : x
+        );
       } else {
         console.log("eingefügt");
         state.cartInfo?.push(item);
@@ -114,4 +141,4 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { removeFromCart } = cartSlice.actions;
+export const { removeFromCart, saveShipingAddress } = cartSlice.actions;

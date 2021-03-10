@@ -11,6 +11,8 @@ import Login from "./features/users/Login";
 import Register from "./features/users/Register";
 import CartPage from "./features/cart/CartPage";
 import ShippingPage from "./pages/ShippingPage";
+import CheckoutPage from "./pages/CheckoutPage";
+import ErrorPage from "./pages/ErrorPage";
 
 // Redux
 import { useSelector } from "react-redux";
@@ -61,6 +63,18 @@ const routes: IRoute[] = [
     exact: false,
     component: ShippingPage,
     private: true,
+  },
+  {
+    path: "/checkout",
+    exact: false,
+    component: CheckoutPage,
+    private: true,
+  },
+  {
+    path: "*",
+    exact: false,
+    component: ErrorPage,
+    private: false,
   },
 ];
 
