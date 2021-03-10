@@ -17,6 +17,7 @@ import * as Yup from "yup";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
 import { saveShipingAddress } from "../features/cart/cartSlice";
+import CheckoutBreadcrumb from "../components/CheckoutBreadcrumb";
 
 const ShippingPage = () => {
   const dispatch = useDispatch();
@@ -38,13 +39,15 @@ const ShippingPage = () => {
       //   paymentMehtod: Yup.string().required("Eine Methode ist nötig"),
     }),
     onSubmit: (daten, { resetForm }) => {
-      console.log(daten);
+      // console.log(daten);
       dispatch(saveShipingAddress(daten));
       resetForm();
+      history.push("/checkout");
     },
   });
   return (
     <Box>
+      <CheckoutBreadcrumb versand={true} checkout={false} bezahlen={false} />
       <Heading color="orange.500" mb={8}>
         Versand
       </Heading>
@@ -151,7 +154,6 @@ const ShippingPage = () => {
           >
             Bezahlmethode
           </FormLabel>
-
           <Select
             variant="flushed"
             type="text"
@@ -161,13 +163,12 @@ const ShippingPage = () => {
             <option value="paypal">PayPal</option>
             <option value="creditcard">Kreditkarte</option>
           </Select>
-
           <FormErrorMessage>{formik.errors.paymentMethod}</FormErrorMessage>
         </FormControl> */}
 
         <Button mt={8} colorScheme="orange" type="submit">
-          {/* Checkout */}
-          <Link to="/checkout">Checkout</Link>
+          Checkout
+          {/* <Link to="/checkout">Checkout</Link> */}
         </Button>
       </form>
     </Box>
