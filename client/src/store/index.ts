@@ -42,7 +42,12 @@ const shipingAddressFromLocalStorage = () => {
   if (shipingAddress) {
     return JSON.parse(shipingAddress);
   } else {
-    return null;
+    return {
+      address: "",
+      city: "",
+      plz: "",
+      country: "",
+    };
   }
 };
 
@@ -55,7 +60,12 @@ interface IPreloadedState {
   };
   cart: {
     cartInfo: [];
-    shipingAddress?: null;
+    shipingAddress: {
+      address: "";
+      city: "";
+      plz: "";
+      country: "";
+    };
   };
 }
 

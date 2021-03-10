@@ -23,6 +23,7 @@ import { RootState } from "../store";
 
 import { FaTrash } from "react-icons/fa";
 import { RiArrowGoBackFill } from "react-icons/ri";
+import CheckoutBreadcrumb from "../components/CheckoutBreadcrumb";
 
 const CheckoutPage = () => {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ const CheckoutPage = () => {
   }, [cartInfo]);
   return (
     <Box>
+      <CheckoutBreadcrumb versand={true} checkout={true} bezahlen={false} />
       <Heading color="orange.500" mb={8}>
         Versandadresse
       </Heading>

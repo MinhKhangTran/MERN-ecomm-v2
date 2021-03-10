@@ -25,7 +25,7 @@ interface IInitState {
   loading: boolean;
   error: any;
   cartInfo: ICartInfo[];
-  shipingAddress?: IShipingAddress | null;
+  shipingAddress: IShipingAddress | null;
 }
 
 // initState
