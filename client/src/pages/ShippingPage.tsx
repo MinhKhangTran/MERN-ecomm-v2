@@ -19,12 +19,9 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
-import { login } from "./userSlice";
-import { RootState } from "../../store";
 
-const Login = () => {
+const ShippingPage = () => {
   const dispatch = useDispatch();
-  const { userInfo, loading } = useSelector((state: RootState) => state.users);
   const history = useHistory();
   const [showPW, setShowPW] = React.useState(false);
   const formik = useFormik({
@@ -36,28 +33,14 @@ const Login = () => {
         .min(6, "mindestens 6 Zeichen!"),
     }),
     onSubmit: (daten, { resetForm }) => {
-      dispatch(login(daten));
-      //   console.log(daten);
+      console.log(daten);
       resetForm();
     },
   });
-  React.useEffect(() => {
-    if (userInfo?._id.length !== 0) {
-      history.goBack();
-    }
-  }, [history, userInfo]);
   return (
-    <Box
-      bgGradient="linear(to-l,orange.50,orange.100)"
-      p={10}
-      mt={16}
-      boxShadow="lg"
-      borderRadius="xl"
-      w={{ base: "100%", md: "65%" }}
-      mx="auto"
-    >
-      <Heading bgGradient="linear(to-l,orange.400,orange.600)" bgClip="text">
-        Login
+    <Box>
+      <Heading color="orange.500" mb={8}>
+        Versand
       </Heading>
       <form onSubmit={formik.handleSubmit}>
         {/* Email */}
@@ -116,7 +99,7 @@ const Login = () => {
           <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
         </FormControl>
 
-        <Button isLoading={loading} mt={8} colorScheme="orange" type="submit">
+        <Button mt={8} colorScheme="orange" type="submit">
           Login
         </Button>
         <Text mt={4} fontStyle="italic">
@@ -138,4 +121,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ShippingPage;
