@@ -11,6 +11,7 @@ import {
   Th,
   Thead,
   Tr,
+  Image,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 // Redux
@@ -23,6 +24,7 @@ import { FaTrash, FaEdit } from "react-icons/fa";
 const AdminPage = () => {
   const dispatch = useDispatch();
   const { users, änderung } = useSelector((state: RootState) => state.users);
+  const { productInfo } = useSelector((state: RootState) => state.products);
   React.useEffect(() => {
     dispatch(getAllProfiles());
     dispatch(clearÄnderung());
@@ -32,6 +34,10 @@ const AdminPage = () => {
       <Heading color="blue.500">Das ist dein Admin Profil</Heading>
       <Text color="blue.400">
         Es ist was besonders, deswegen verdient es einen fancy desing
+      </Text>
+      {/* User Stuff */}
+      <Text mt={6} fontSize="xl" color="blue.400">
+        Das sind die User
       </Text>
 
       <Box>
@@ -67,6 +73,60 @@ const AdminPage = () => {
                         onClick={() => {
                           dispatch(deleteProfile({ id: user._id }));
                         }}
+                      ></IconButton>
+                    </ButtonGroup>
+                  </Td>
+                </Tr>
+              );
+            })}
+          </Tbody>
+        </Table>
+      </Box>
+      {/* User Stuff */}
+      <Text mt={6} fontSize="xl" color="blue.400">
+        Das sind die Produkte
+      </Text>
+
+      <Box>
+        <Table>
+          <Thead>
+            <Tr>
+              <Th>Name</Th>
+              <Th>Bild</Th>
+              <Th>Anzahl</Th>
+              <Th></Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {productInfo?.map((product) => {
+              return (
+                <Tr key={product._id}>
+                  <Td>{product.name}</Td>
+                  <Td>
+                    <Image
+                      boxSize="100px"
+                      objectFit="cover"
+                      src={product.image}
+                      alt={product.name}
+                    />
+                  </Td>
+                  <Td>{product.countInStock}</Td>
+                  <Td>
+                    <ButtonGroup>
+                      <Link to={`/admin/users/update/${product._id}`}>
+                        <IconButton
+                          icon={<FaEdit />}
+                          aria-label="Edit"
+                          colorScheme="blue"
+                        ></IconButton>
+                      </Link>
+                      <IconButton
+                        icon={<FaTrash />}
+                        aria-label="Delete"
+                        colorScheme="red"
+                        // onClick={() => {
+                        //   dispatch(deleteProfile({ id: product._id }));
+                        // }}
                       ></IconButton>
                     </ButtonGroup>
                   </Td>
