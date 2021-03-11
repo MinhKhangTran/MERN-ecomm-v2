@@ -18,6 +18,7 @@ import ErrorPage from "./pages/ErrorPage";
 import { useSelector } from "react-redux";
 // Rootstate
 import { RootState } from "./store";
+import UserUpdate from "./features/users/UserUpdate";
 
 // types
 interface IRoute {
@@ -75,6 +76,13 @@ const routes: IRoute[] = [
     path: "/checkout",
     exact: false,
     component: CheckoutPage,
+    private: true,
+    admin: false,
+  },
+  {
+    path: "/profile",
+    exact: false,
+    component: UserUpdate,
     private: true,
     admin: false,
   },

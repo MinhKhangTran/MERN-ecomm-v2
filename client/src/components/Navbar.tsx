@@ -81,7 +81,9 @@ const Navbar = () => {
                   <Text casing="capitalize">{userInfo?.username}</Text>
                 </MenuButton>
                 <MenuList>
-                  <MenuItem>Dein Profil</MenuItem>
+                  <MenuItem>
+                    <Link to="/profile">Dein Profil</Link>
+                  </MenuItem>
                   {userInfo?.role === "admin" && (
                     <MenuItem>Admin Profil</MenuItem>
                   )}
