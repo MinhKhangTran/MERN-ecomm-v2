@@ -18,6 +18,7 @@ import * as Yup from "yup";
 import { useSelector, useDispatch } from "react-redux";
 import { saveShipingAddress } from "../features/cart/cartSlice";
 import CheckoutBreadcrumb from "../components/CheckoutBreadcrumb";
+import { RootState } from "../store";
 
 const ShippingPage = () => {
   const dispatch = useDispatch();
@@ -45,6 +46,13 @@ const ShippingPage = () => {
       history.push("/checkout");
     },
   });
+
+  const { shipingAddress } = useSelector((state: RootState) => state.cart);
+  React.useEffect(() => {
+    if (shipingAddress !== null) {
+      history.push("/checkout");
+    }
+  }, [shipingAddress, history]);
   return (
     <Box>
       <CheckoutBreadcrumb versand={true} checkout={false} bezahlen={false} />

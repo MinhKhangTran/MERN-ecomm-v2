@@ -104,6 +104,10 @@ export const cartSlice = createSlice({
         JSON.stringify(state.shipingAddress)
       );
     },
+    clearShoppingAddress: (state) => {
+      state.shipingAddress = null;
+      localStorage.removeItem("shipingAddress");
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(addToCart.pending, (state) => {
@@ -141,4 +145,8 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { removeFromCart, saveShipingAddress } = cartSlice.actions;
+export const {
+  removeFromCart,
+  saveShipingAddress,
+  clearShoppingAddress,
+} = cartSlice.actions;

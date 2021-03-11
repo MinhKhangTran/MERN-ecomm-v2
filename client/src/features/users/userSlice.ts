@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toastError, toastSuccess } from "../toast/toastSlice";
+import { clearShoppingAddress } from "../cart/cartSlice";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 // types
@@ -87,6 +88,7 @@ export const logoutUser = createAsyncThunk(
   async (_, { dispatch }) => {
     dispatch(toastSuccess("Bis bald :D"));
     localStorage.removeItem("userInfo");
+    dispatch(clearShoppingAddress());
     return initState;
   }
 );
