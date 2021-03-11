@@ -13,12 +13,14 @@ import CartPage from "./features/cart/CartPage";
 import ShippingPage from "./pages/ShippingPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import ErrorPage from "./pages/ErrorPage";
+import UserUpdate from "./features/users/UserUpdate";
+import AdminPage from "./features/users/AdminPage";
+import AdminUserPage from "./features/users/AdminUserPage";
 
 // Redux
 import { useSelector } from "react-redux";
 // Rootstate
 import { RootState } from "./store";
-import UserUpdate from "./features/users/UserUpdate";
 
 // types
 interface IRoute {
@@ -85,6 +87,20 @@ const routes: IRoute[] = [
     component: UserUpdate,
     private: true,
     admin: false,
+  },
+  {
+    path: "/admin/profile",
+    exact: false,
+    component: AdminPage,
+    private: true,
+    admin: true,
+  },
+  {
+    path: "/admin/users/update/:id",
+    exact: false,
+    component: AdminUserPage,
+    private: true,
+    admin: true,
   },
   {
     path: "*",

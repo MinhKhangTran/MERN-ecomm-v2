@@ -85,7 +85,9 @@ const Navbar = () => {
                     <Link to="/profile">Dein Profil</Link>
                   </MenuItem>
                   {userInfo?.role === "admin" && (
-                    <MenuItem>Admin Profil</MenuItem>
+                    <MenuItem>
+                      <Link to="/admin/profile">Admin Profil</Link>
+                    </MenuItem>
                   )}
 
                   <MenuDivider />

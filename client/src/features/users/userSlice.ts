@@ -17,6 +17,9 @@ interface IInitState {
   loading: boolean;
   error: any;
   userInfo: IUserInfo | null;
+  users: IUserInfo[] | null;
+  änderung: boolean;
+  user: IUserInfo | null;
 }
 
 // initState
@@ -24,6 +27,15 @@ const initState: IInitState = {
   loading: false,
   error: "",
   userInfo: {
+    username: "",
+    email: "",
+    token: "",
+    _id: "",
+    role: "benutzer",
+  },
+  users: null,
+  änderung: false,
+  user: {
     username: "",
     email: "",
     token: "",
@@ -133,14 +145,127 @@ export const updateProfile = createAsyncThunk(
   }
 );
 // get Profiles ADMIN
-// get Profiles by ID ADMIN
-// update Profile ADMIN
-// delete Profile ADMIN
+export const getAllProfiles = createAsyncThunk(
+  "users/getAllProfiles",
+  async (_, { dispatch, getState, rejectWithValue }) => {
+    try {
+      const {
+        users: { userInfo },
+      } = getState() as RootState;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
 
+      const { data } = await axios.get("/api/a1/users", config);
+      return data;
+    } catch (error) {
+      // toast
+      dispatch(toastError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+// get Profile by Id ADMIN
+export const getProfileById = createAsyncThunk(
+  "users/getProfileById",
+  async ({ id }: { id: string }, { dispatch, getState, rejectWithValue }) => {
+    try {
+      const {
+        users: { userInfo },
+      } = getState() as RootState;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
+
+      const { data } = await axios.get(`/api/a1/users/${id}`, config);
+      return data;
+    } catch (error) {
+      // toast
+      dispatch(toastError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+// update Profile ADMIN
+export const updateProfileAsAdmin = createAsyncThunk(
+  "users/updateProfileAsAdmin",
+  async (
+    {
+      username,
+      email,
+      role,
+      id,
+    }: {
+      username: string;
+      email: string;
+      role: "benutzer" | "admin";
+      id: string;
+    },
+    { dispatch, getState, rejectWithValue }
+  ) => {
+    try {
+      const {
+        users: { userInfo },
+      } = getState() as RootState;
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `api/a1/users/${id}`,
+        { username, email, role },
+        config
+      );
+      dispatch(toastSuccess("Erfolgreich geändert"));
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      // dispatch(login({ email, password }));
+      return data;
+    } catch (error) {
+      // toast
+      dispatch(toastError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+// delete Profile ADMIN
+export const deleteProfile = createAsyncThunk(
+  "users/deleteProfile",
+  async ({ id }: { id: string }, { dispatch, getState, rejectWithValue }) => {
+    try {
+      const {
+        users: { userInfo },
+      } = getState() as RootState;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
+
+      const { data } = await axios.delete(`/api/a1/users/${id}`, config);
+      dispatch(toastSuccess("User wurde gelöscht!"));
+      return data;
+    } catch (error) {
+      // toast
+      dispatch(toastError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
 export const userSlice = createSlice({
   name: "user",
   initialState: initState,
-  reducers: {},
+  reducers: {
+    clearÄnderung: (state) => {
+      state.änderung = false;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state) => {
       state.loading = true;
@@ -185,5 +310,60 @@ export const userSlice = createSlice({
       state.loading = false;
       state.error = payload;
     });
+    // ======================ADMIN======================
+    // get all profiles
+    builder.addCase(getAllProfiles.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getAllProfiles.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.error = "";
+      state.users = payload;
+    });
+    builder.addCase(getAllProfiles.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
+    // get profile by Id
+    builder.addCase(getProfileById.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getProfileById.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.error = "";
+      state.user = payload;
+    });
+    builder.addCase(getProfileById.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
+    // Delete a user by id
+    builder.addCase(deleteProfile.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteProfile.fulfilled, (state) => {
+      state.loading = false;
+      state.error = "";
+      state.änderung = true;
+    });
+    builder.addCase(deleteProfile.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
+    // update any profile
+    builder.addCase(updateProfileAsAdmin.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(updateProfileAsAdmin.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.error = "";
+      state.änderung = true;
+    });
+    builder.addCase(updateProfileAsAdmin.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
   },
 });
+
+export const { clearÄnderung } = userSlice.actions;

@@ -104,6 +104,7 @@ export const updateProfileOwner = asyncHandler(async (req, res) => {
     username: updatedUser.username,
     email: updatedUser.email,
     token: generateToken(updatedUser._id),
+    role: updatedUser.role,
   });
 });
 // =======================================================================================================
