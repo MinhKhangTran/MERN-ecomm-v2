@@ -219,7 +219,7 @@ export const updateProfileAsAdmin = createAsyncThunk(
       };
 
       const { data } = await axios.put(
-        `api/a1/users/${id}`,
+        `/api/a1/users/${id}`,
         { username, email, role },
         config
       );

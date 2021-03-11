@@ -24,12 +24,13 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 // toast
 import { toastError } from "../toast/toastSlice";
 import { getProfileById, updateProfileAsAdmin } from "./userSlice";
-import { useParams } from "react-router";
+import { useParams, useHistory } from "react-router";
 
 const AdminUserPage = () => {
   interface IParams {
     id: string;
   }
+  const history = useHistory();
   const { id } = useParams<IParams>();
 
   const dispatch = useDispatch();
@@ -43,7 +44,7 @@ const AdminUserPage = () => {
     username: "",
     role: "",
   });
-  const { user } = useSelector((state: RootState) => state.users);
+  const { user, änderung } = useSelector((state: RootState) => state.users);
 
   //   const { username, email, role } = user!;
   React.useEffect(() => {
@@ -76,12 +77,18 @@ const AdminUserPage = () => {
           username: daten.username,
           // @ts-expect-error
           role: daten.role,
+          id,
         })
       );
 
       resetForm();
     },
   });
+  React.useEffect(() => {
+    if (änderung) {
+      history.push("/admin/profile");
+    }
+  }, [änderung]);
   return (
     <Box>
       <Heading color="orange.400">User</Heading>
