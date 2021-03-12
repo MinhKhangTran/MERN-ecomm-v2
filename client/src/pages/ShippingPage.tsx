@@ -49,7 +49,7 @@ const ShippingPage = () => {
 
   const { shipingAddress } = useSelector((state: RootState) => state.cart);
   React.useEffect(() => {
-    if (shipingAddress !== null) {
+    if (shipingAddress?.address !== "") {
       history.push("/checkout");
     }
   }, [shipingAddress, history]);

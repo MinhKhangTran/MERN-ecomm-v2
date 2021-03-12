@@ -12,11 +12,17 @@ import {
   Thead,
   Tr,
   Image,
+  Button,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
 import { getAllProfiles, deleteProfile, clearÄnderung } from "./userSlice";
+import {
+  deleteProductById,
+  clearProductÄnderung,
+  getAllProducts,
+} from "../products/productSlice";
 import { RootState } from "../../store";
 // icons
 import { FaTrash, FaEdit } from "react-icons/fa";
@@ -24,11 +30,15 @@ import { FaTrash, FaEdit } from "react-icons/fa";
 const AdminPage = () => {
   const dispatch = useDispatch();
   const { users, änderung } = useSelector((state: RootState) => state.users);
-  const { productInfo } = useSelector((state: RootState) => state.products);
+  const { productInfo, änderung: productÄnderung } = useSelector(
+    (state: RootState) => state.products
+  );
   React.useEffect(() => {
     dispatch(getAllProfiles());
+    dispatch(getAllProducts());
     dispatch(clearÄnderung());
-  }, [dispatch, änderung]);
+    dispatch(clearProductÄnderung);
+  }, [dispatch, änderung, productÄnderung]);
   return (
     <Box>
       <Heading color="blue.500">Das ist dein Admin Profil</Heading>
@@ -87,6 +97,10 @@ const AdminPage = () => {
         Das sind die Produkte
       </Text>
 
+      <Button my={6} colorScheme="blue">
+        <Link to="/admin/createProduct">Neues Produkt hinzufügen</Link>
+      </Button>
+
       <Box>
         <Table>
           <Thead>
@@ -124,9 +138,9 @@ const AdminPage = () => {
                         icon={<FaTrash />}
                         aria-label="Delete"
                         colorScheme="red"
-                        // onClick={() => {
-                        //   dispatch(deleteProfile({ id: product._id }));
-                        // }}
+                        onClick={() => {
+                          dispatch(deleteProductById({ id: product._id }));
+                        }}
                       ></IconButton>
                     </ButtonGroup>
                   </Td>

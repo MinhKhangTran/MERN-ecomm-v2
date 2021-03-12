@@ -16,6 +16,7 @@ import ErrorPage from "./pages/ErrorPage";
 import UserUpdate from "./features/users/UserUpdate";
 import AdminPage from "./features/users/AdminPage";
 import AdminUserPage from "./features/users/AdminUserPage";
+import AdminCreateProduct from "./features/products/AdminCreateProduct";
 
 // Redux
 import { useSelector } from "react-redux";
@@ -99,6 +100,13 @@ const routes: IRoute[] = [
     path: "/admin/users/update/:id",
     exact: false,
     component: AdminUserPage,
+    private: true,
+    admin: true,
+  },
+  {
+    path: "/admin/createProduct",
+    exact: false,
+    component: AdminCreateProduct,
     private: true,
     admin: true,
   },
