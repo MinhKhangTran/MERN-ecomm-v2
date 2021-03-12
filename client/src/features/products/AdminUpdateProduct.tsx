@@ -38,11 +38,13 @@ const AdminUpdateProduct = () => {
   React.useEffect(() => {
     dispatch(getProductById({ id }));
   }, [dispatch]);
-
+  //   Image
+  const [uploading, setUploading] = React.useState(false);
+  const [image, setImage] = React.useState("");
   const [formData, setFormData] = React.useState({
     name: "",
     price: 0,
-    image: "",
+    image,
     brand: "",
     desc: "",
     category: "",
@@ -76,9 +78,6 @@ const AdminUpdateProduct = () => {
     dispatch(clearProductÄnderung());
   }, [änderung]);
   const history = useHistory();
-  //   Image
-  const [uploading, setUploading] = React.useState(false);
-  const [image, setImage] = React.useState("");
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -200,6 +199,7 @@ const AdminUpdateProduct = () => {
             variant="flushed"
             type="file"
             onChange={uploadFileHandler}
+            // value={formData.image}
             // {...formik.getFieldProps("image")}
           />
           <Input
