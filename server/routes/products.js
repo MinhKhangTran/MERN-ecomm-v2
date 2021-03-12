@@ -49,8 +49,8 @@ router
   .delete(protect, grantAccess("deleteAny", "products"), deleteProduct)
   .put(
     protect,
-    updateProductAdminValidator,
-    runValidation,
+    // updateProductAdminValidator,
+    // runValidation,
     grantAccess("updateAny", "products"),
     updateProduct
   );

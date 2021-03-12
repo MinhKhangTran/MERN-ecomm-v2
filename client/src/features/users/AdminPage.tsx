@@ -127,7 +127,7 @@ const AdminPage = () => {
                   <Td>{product.countInStock}</Td>
                   <Td>
                     <ButtonGroup>
-                      <Link to={`/admin/users/update/${product._id}`}>
+                      <Link to={`/admin/products/update/${product._id}`}>
                         <IconButton
                           icon={<FaEdit />}
                           aria-label="Edit"

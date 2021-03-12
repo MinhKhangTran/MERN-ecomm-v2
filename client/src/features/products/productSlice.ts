@@ -152,6 +152,69 @@ export const createProduct = createAsyncThunk(
     }
   }
 );
+// update product
+export const updateProduct = createAsyncThunk(
+  "products/updateProduct",
+  async (
+    {
+      name,
+      price,
+      image,
+      brand,
+      desc,
+      category,
+      countInStock,
+      numReviews,
+      rating,
+      id,
+    }: {
+      name: string;
+      price: number;
+      image: string;
+      brand: string;
+      desc: string;
+      category: string;
+      countInStock: number;
+      numReviews: number;
+      rating: number;
+      id: string;
+    },
+    { dispatch, getState, rejectWithValue }
+  ) => {
+    try {
+      const {
+        users: { userInfo },
+      } = getState() as RootState;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `/api/a1/products/${id}`,
+        {
+          name,
+          price,
+          image,
+          brand,
+          desc,
+          category,
+          countInStock,
+          numReviews,
+          rating,
+        },
+        config
+      );
+      console.log(data);
+      dispatch(toastSuccess("Produkt wurde geändert!"));
+      return data;
+    } catch (error) {
+      // toast
+      dispatch(toastError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
 
 // Slice
 export const productSlice = createSlice({
@@ -215,6 +278,19 @@ export const productSlice = createSlice({
       }
     });
     builder.addCase(createProduct.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
+    // Delete a product by id
+    builder.addCase(updateProduct.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(updateProduct.fulfilled, (state) => {
+      state.loading = false;
+      state.error = "";
+      state.änderung = true;
+    });
+    builder.addCase(updateProduct.rejected, (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     });
