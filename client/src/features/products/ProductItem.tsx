@@ -16,6 +16,7 @@ import Stars from "../../components/Stars";
 // types
 import { IProducts } from "./productSlice";
 import { Link } from "react-router-dom";
+import ReviewList from "./ReviewList";
 
 interface IProductItem extends IProducts {
   single: boolean;
@@ -116,7 +117,7 @@ const ProductItem = ({
             </Button>
           </Box>
         </Grid>
-        <Box>REVIEWS kommen hier her</Box>
+        <ReviewList />
       </Box>
     );
   }
