@@ -112,7 +112,7 @@ const AdminPage = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {productInfo?.map((product) => {
+            {productInfo?.docs?.map((product) => {
               return (
                 <Tr key={product._id}>
                   <Td>{product.name}</Td>

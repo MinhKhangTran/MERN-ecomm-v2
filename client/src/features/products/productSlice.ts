@@ -32,7 +32,17 @@ export interface IProducts {
 interface IInitState {
   loading: boolean;
   error: any;
-  productInfo: IProducts[] | null;
+  productInfo: {
+    docs: IProducts[] | null;
+    totalPages: number | null;
+    hasPrevPage?: boolean;
+    hasNextPage?: boolean;
+    nextPage?: number | null;
+    prevPage?: number | null;
+    limit?: number;
+    page?: number;
+    pagingCounter?: number;
+  };
   singleProduct: IProducts | null;
   änderung: boolean;
 }
@@ -40,7 +50,7 @@ interface IInitState {
 const initState: IInitState = {
   loading: false,
   error: "",
-  productInfo: null,
+  productInfo: { docs: null, totalPages: null },
   singleProduct: null,
   änderung: false,
 };
@@ -98,6 +108,28 @@ export const createReview = createAsyncThunk(
         config
       );
       dispatch(toastSuccess("Dieses Produkt wurde bewertet!"));
+      return data;
+    } catch (error) {
+      // toast
+      dispatch(toastError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+// paginate ansicht
+export const paginateProducts = createAsyncThunk(
+  "products/paginateProducts",
+  async (
+    { page = 1, limit = 5 }: { page: number; limit: number },
+    { dispatch, rejectWithValue }
+  ) => {
+    try {
+      const { data } = await axios.post("/api/a1/products/paginate", {
+        page,
+        limit,
+      });
+      console.log(data);
       return data;
     } catch (error) {
       // toast
@@ -278,6 +310,19 @@ export const productSlice = createSlice({
       state.loading = false;
       state.error = payload;
     });
+    // Get all Products (Paginate)
+    builder.addCase(paginateProducts.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(paginateProducts.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.error = "";
+      state.productInfo = payload;
+    });
+    builder.addCase(paginateProducts.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
     // Get Product by Id
     builder.addCase(getProductById.pending, (state) => {
       state.loading = true;
@@ -325,8 +370,8 @@ export const productSlice = createSlice({
     builder.addCase(createProduct.fulfilled, (state, { payload }) => {
       state.loading = false;
       state.error = "";
-      if (state.productInfo !== null) {
-        state.productInfo.push = payload;
+      if (state.productInfo.docs !== null) {
+        state.productInfo.docs.push = payload;
       }
     });
     builder.addCase(createProduct.rejected, (state, { payload }) => {
