@@ -6,6 +6,14 @@ import { toastError, toastSuccess } from "../toast/toastSlice";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 // types
+
+interface IRating {
+  comment: string;
+  rating: number;
+  name: string;
+  createdAt: string;
+  _id: string;
+}
 export interface IProducts {
   rating: number;
   numReviews: number;
@@ -18,7 +26,7 @@ export interface IProducts {
   brand: string;
   category: string;
   user: string;
-  reviews: any[];
+  reviews: IRating[];
   createdAt: string;
 }
 interface IInitState {
@@ -59,6 +67,37 @@ export const getProductById = createAsyncThunk(
   async ({ id }: { id: string }, { dispatch, rejectWithValue }) => {
     try {
       const { data } = await axios.get(`/api/a1/products/${id}`);
+      return data;
+    } catch (error) {
+      // toast
+      dispatch(toastError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+// create a review
+export const createReview = createAsyncThunk(
+  "products/createReview",
+  async (
+    { id, comment, rating }: { id: string; comment: string; rating: number },
+    { dispatch, getState, rejectWithValue }
+  ) => {
+    try {
+      const {
+        users: { userInfo },
+      } = getState() as RootState;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
+      const { data } = await axios.post(
+        `/api/a1/products/${id}/reviews`,
+        { comment, rating },
+        config
+      );
+      dispatch(toastSuccess("Dieses Produkt wurde bewertet!"));
       return data;
     } catch (error) {
       // toast
@@ -249,6 +288,19 @@ export const productSlice = createSlice({
       state.singleProduct = payload;
     });
     builder.addCase(getProductById.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
+    // create a Review for a product with id
+    builder.addCase(createReview.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(createReview.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.änderung = true;
+      state.error = "";
+    });
+    builder.addCase(createReview.rejected, (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     });

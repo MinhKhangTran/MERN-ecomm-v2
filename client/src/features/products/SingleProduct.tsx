@@ -3,7 +3,7 @@ import ProductItem from "./ProductItem";
 import { useParams } from "react-router-dom";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
-import { getProductById } from "./productSlice";
+import { clearProductÄnderung, getProductById } from "./productSlice";
 import { RootState } from "../../store";
 import { Box } from "@chakra-ui/layout";
 import { Spinner } from "@chakra-ui/spinner";
@@ -14,9 +14,12 @@ const SingleProduct = () => {
   }
   const { id } = useParams<IParams>();
   const dispatch = useDispatch();
+  const { änderung } = useSelector((state: RootState) => state.products);
   React.useEffect(() => {
     dispatch(getProductById({ id }));
-  }, [dispatch]);
+
+    dispatch(clearProductÄnderung);
+  }, [dispatch, änderung]);
   const { singleProduct, loading } = useSelector(
     (state: RootState) => state.products
   );

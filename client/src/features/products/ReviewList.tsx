@@ -1,14 +1,22 @@
 import React from "react";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Flex, Spacer, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import Stars from "../../components/Stars";
+import Moment from "react-moment";
+import "moment/locale/de";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store";
 import ReviewForm from "./ReviewForm";
+import { clearProductÄnderung, getProductById } from "./productSlice";
 
 const ReviewList = () => {
-  const { singleProduct } = useSelector((state: RootState) => state.products);
+  const dispatch = useDispatch();
+  const { singleProduct, änderung } = useSelector(
+    (state: RootState) => state.products
+  );
   const { userInfo } = useSelector((state: RootState) => state.users);
+
   if (singleProduct?.reviews.length === 0) {
     return (
       <Box mt={8}>
@@ -31,9 +39,38 @@ const ReviewList = () => {
   return (
     <Box mt={8}>
       {singleProduct?.reviews.map((review) => {
-        return <Box>Review</Box>;
+        return (
+          <Box
+            mb={4}
+            borderTop="1px"
+            borderColor="gray.200"
+            key={review._id!}
+            mt={6}
+          >
+            <Stars rating={review.rating} />
+            <Flex align="center">
+              <Text casing="capitalize" fontWeight="bold" fontSize="lg">
+                {review.name}
+              </Text>
+              <Spacer />
+              <Text>
+                <Moment locale="de" to={review.createdAt}></Moment>
+              </Text>
+            </Flex>
+            <Text>{review.comment}</Text>
+          </Box>
+        );
       })}
-      <ReviewForm />
+      {userInfo?._id.length === 0 ? (
+        <Box>
+          <Text>
+            Du musst dich anmelden um zu bewerten!{" "}
+            <Link to="/login">Hier klicken</Link>
+          </Text>
+        </Box>
+      ) : (
+        <ReviewForm />
+      )}
     </Box>
   );
 };
